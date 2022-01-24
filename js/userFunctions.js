@@ -39,8 +39,10 @@ function updateUserGUI(){
     }
     // END: show/hide elements based on login status
     // START: fill data tags
-    if(sessionStorage.getItem("uid") != null){
-
+    if(sessionStorage.getItem("uid") != null){ // login session check
+        document.querySelectorAll(".display_alias").forEach((item,key)=>{
+            item.innerText =  sessionStorage.getItem("alias");  
+        })
     }
     // END: fill data tags
 }

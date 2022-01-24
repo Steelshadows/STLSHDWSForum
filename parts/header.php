@@ -2,7 +2,7 @@
     session_start();
     $urls = [
         "login"=>"php/pageData/login.php",
-        "bioPage"=>"php/pageData/bio.php",
+        "myBioPage"=>"php/pageData/mybio.php",
     ];
 ?>
 <!DOCTYPE html>
@@ -45,7 +45,7 @@
             <a class="nav-link active user_logged_out" aria-current="page" onclick="goToUrl('<?=$urls['login']?>')">Log in</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active user_logged_in" aria-current="page" onclick="goToUrl('<?=$urls['bioPage']?>')">Welcome, <span class="display_user_name"></span></a>
+            <a class="nav-link active user_logged_in" aria-current="page" onclick="goToUrl('<?=$urls['myBioPage']?>')">Welcome, <span class="display_alias"></span></a>
         </li>
     </ul>
   </div>
