@@ -72,7 +72,7 @@ function userLogout(){
     session_destroy();
 }
 function saveProfileEdits($data){
-    
+
     $db_connection = new db_connection();
 
     foreach($data as $key=>$edit){
@@ -84,6 +84,10 @@ function saveProfileEdits($data){
                 break;
             case "image":
                 $sql = "UPDATE `users` SET `image` = ? WHERE `users`.`uid` = ?";
+                //TODO:
+                // edit this function so images get saved as files instead of base64 strings
+                // file_put_contents($output_file, file_get_contents($base64_string));
+                // https://stackoverflow.com/questions/15153776/convert-base64-string-to-an-image-file
                 break;
             case "alias":
                 $sql = "UPDATE `users` SET `alias` = ? WHERE `users`.`uid` = ?";

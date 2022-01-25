@@ -6,6 +6,7 @@ require_once('class/DB_class.php');
 
 //function includes
 include_once('userFunction.php');
+include_once('postFunction.php');
  
 //get data and fire function
 if(isset($_GET["action"])){
