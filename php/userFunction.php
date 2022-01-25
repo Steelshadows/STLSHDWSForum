@@ -17,7 +17,7 @@ function saveNewUser($data){
             $params = [$username,$alias,"img/path.jpg",$passwordEncode];
             $db_connection->Query($sql,$params);
             
-            return ['success'=>true,"loginCheck"=>userLoginCheck([["value"=>$username],["value"=>$password]])];
+            return ['success'=>true,"loginCheck"=>setSessionUserCheck([["value"=>$username],["value"=>$password]])];
         }else{
             return ['success'=>false,"error"=>"username_exists"];
         }
@@ -36,34 +36,68 @@ function userLoginCheck($data){
     // var_dump($userData);
     
     if(password_verify($password,$userData["password"])){        
-        return ['success'=>true,"loginStatus"=>userLogin($userData['uid'])];
+        return ['success'=>true,"loginStatus"=>setSessionUser($userData['uid'])];
     }else{
         return ['success'=>false,"error"=>"passwords_dont_match"];
     }
 }
-function userLogin($uid){
+function setSessionUser($uid){
     $uid = (int) $uid;
 
     $db_connection = new db_connection();
     
     if(is_int( $uid )){
-        $sql = "SELECT `uid`,`username`,`alias`,`image` FROM `users` WHERE `uid` = ?";
+        $sql = "SELECT `uid`,`username`,`alias`,`image`,`bio` FROM `users` WHERE `uid` = ?";
         $params = [$uid];
         $userData = $db_connection->fetchQuery($sql,$params);
         $_SESSION['userData']=$userData;
-        return ['success'=>true,$_SESSION];
+        return ['success'=>true];
     }else{        
         return ['success'=>false,"error"=>"uid_not_a_number"];
     }
 }
 function getUserFromSession(){
-    if(isset($_SESSION['userData'])){
-        return ['success'=>true,'data'=>$_SESSION['userData']] ;
+    if(isset($_SESSION['userData']["uid"])){
+        setSessionUser($_SESSION['userData']["uid"]);
+        if(isset($_SESSION['userData'])){
+            return ['success'=>true,'data'=>$_SESSION['userData']] ;
+        }else{
+            return ['success'=>false,'error'=>"userdata_not_set"] ;
+        }
     }else{
-        return ['success'=>false,'error'=>"userdata_not_set"] ;
+        return ['success'=>false,'error'=>"uid not set"] ;
     }
 }
 function userLogout(){
     session_destroy();
+}
+function saveProfileEdits($data){
+    
+    $db_connection = new db_connection();
+
+    foreach($data as $key=>$edit){
+        $value = $edit["data"];
+        $uid = $_SESSION['userData']["uid"];
+        switch($edit["type"]){
+            case "bio":
+                $sql = "UPDATE `users` SET `bio` = ? WHERE `users`.`uid` = ?";
+                break;
+            case "image":
+                $sql = "UPDATE `users` SET `image` = ? WHERE `users`.`uid` = ?";
+                break;
+            case "alias":
+                $sql = "UPDATE `users` SET `alias` = ? WHERE `users`.`uid` = ?";
+                break;
+            default:
+                $sql = "";
+                
+        }
+        $params = [$value,$uid];
+        $userData = $db_connection->Query($sql,$params);
+        if(count($data)-1 == $key){
+            return ["success"=>true];
+        }
+    }
+    return ["success"=>false,"error"=>"edits_could_not_be_saved","data"=>$data];
 }
 ?>

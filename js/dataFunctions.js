@@ -25,8 +25,17 @@ function goToUrl(url,data){
         document.querySelectorAll("script[type='temp']").forEach((item,key)=>{
             // console.log(key,item.innerHTML);
             eval(item.innerHTML);
-            refreshLoggedinUserData()
-            updateUserGUI()
+        });
+        document.querySelectorAll("hideOnUrlChange").forEach((item,key)=>{
+            item.classList.add("d-none");
         });
     });
+}
+function goToPage(url,data){
+    $urls = {
+        "login":"php/pageData/login.php",
+        "myBioPage":"php/pageData/mybio.php",
+        "posts":"php/pageData/posts.php",
+    };
+    goToUrl($urls[url],data);
 }
