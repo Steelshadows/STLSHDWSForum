@@ -20,7 +20,21 @@ function doRequest(url,arg1,arg2){
     xhttp.send(post);
 }
 function goToUrl(url,data){
-    doRequest(url,data,(res)=>{
+    console.log(data);
+    getStr = "";
+    if(!!data){
+        if(typeof data == "string" && data[0] == "?"){
+            getStr = data;
+        }else{
+            getStr = "?";
+            for (item in data){
+                getStr += item+"="+data[item]+"&";
+                console.log(item,data[item])
+            }
+        }
+    }
+    console.log(getStr);
+    doRequest(url+getStr,data,(res)=>{
         document.getElementById('content-box').innerHTML = res;
         document.querySelectorAll("script[type='temp']").forEach((item,key)=>{
             // console.log(key,item.innerHTML);
@@ -30,6 +44,7 @@ function goToUrl(url,data){
             item.classList.add("d-none");
         });
         updateUserGUI();
+        document.location.hash += getStr;
     });
 }
 function goToPage(url,data){
@@ -37,6 +52,15 @@ function goToPage(url,data){
         "login":"php/pageData/login.php",
         "myBioPage":"php/pageData/mybio.php",
         "posts":"php/pageData/posts.php",
+        "post":"php/pageData/post.php",
+        "guestBioPage":"php/pageData/user.php",
     };
+    document.location.hash = url;
     goToUrl($urls[url],data);
+}
+function reloadPage(){
+    url = document.location.hash.split("?")[0];
+    data = "?"+document.location.hash.split("?")[1];
+    url = url.split("#")[1];
+    goToPage(url,data);
 }

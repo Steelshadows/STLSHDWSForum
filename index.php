@@ -3,7 +3,7 @@ require_once("parts/header.php");
 ?>
 <script>
     refreshLoggedinUserData();
-    goToPage('posts');
+    reloadPage();
 </script>
 
 <?php 
