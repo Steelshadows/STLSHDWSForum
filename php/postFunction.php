@@ -38,3 +38,21 @@ function getPosts($data){
         return ['success'=>false,"error"=>"user_not_logged_in"];
     }
 }
+function getSpecificPost($data){
+    $pid = $data["pid"];
+    if(isset($_SESSION['userData']["uid"])){
+        
+        $db_connection = new db_connection();
+        
+        $sql = "SELECT posts.pid,posts.uid,posts.title,posts.content,posts.date, users.alias, users.image FROM `posts` LEFT JOIN users ON posts.uid = users.uid WHERE posts.pid = ? ORDER BY date DESC";
+        $params = [$pid];
+        $result = $db_connection->fetchQuery($sql,$params);
+        if(!!$result){                
+            return ['success'=>true,"posts"=>$result];
+        }else{
+            return ['success'=>false,"error"=>"loading_posts_failed"];
+        }
+    }else{
+        return ['success'=>false,"error"=>"user_not_logged_in"];
+    }
+}

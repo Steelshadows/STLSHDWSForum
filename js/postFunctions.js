@@ -1,3 +1,4 @@
+//this function creates the html elements needed to view all posts
 function createPostBlock(target,pid,uid,titleText,contentText,date,userAlias,userImageSrc){
     container = document.createElement('div');
     container.className = "row m-2 bg-light";
@@ -72,6 +73,22 @@ function createPostBlock(target,pid,uid,titleText,contentText,date,userAlias,use
     container.appendChild(userBox);
     container.appendChild(content);
     target.appendChild(container);
+}
+function loadPostsDate(){
+    doRequest('php/action.php?action=getPosts',(res)=>{
+        results = JSON.parse(res);
+        if(results["success"]){
+            posts = results["posts"];
+            posts.forEach((item)=>{
+                createPostBlock(document.querySelector("div.view_post"),item.pid,item.uid,item.title,item.content,item.date,item.alias,item.image)
+                //console.log(item);
+            });
+
+        }else if(results["error"] == "user_not_logged_in"){
+            goToPage("login");
+        }
+
+    }); 
 }
 function loadPostsDate(){
     doRequest('php/action.php?action=getPosts',(res)=>{
