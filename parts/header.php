@@ -15,6 +15,7 @@
 
 <script src="js/dataFunctions.js"></script>
 <script src="js/userFunctions.js"></script>
+<script src="js/postFunctions.js"></script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">

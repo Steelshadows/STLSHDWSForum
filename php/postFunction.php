@@ -17,3 +17,22 @@ function saveNewPost($data){
         }
     }
 }
+function getPosts($data){
+    //sort on type -> kan via de javascript
+    //search type -> kan ook via js
+    //search value -> kan ook via js
+
+    if(isset($_SESSION['userData']["uid"])){
+        
+        $db_connection = new db_connection();
+        
+        $sql = "SELECT posts.pid,posts.uid,posts.title,posts.content,posts.date, users.alias, users.image FROM `posts` LEFT JOIN users ON posts.uid = users.uid ORDER BY date DESC";
+        $params = [];
+        $results = $db_connection->fetchAllQuery($sql,$params);
+        if(count($results) >= 1){                
+            return ['success'=>true,"posts"=>$results];
+        }else{
+            return ['success'=>false,"error"=>"loading_posts_failed"];
+        }
+    }
+}

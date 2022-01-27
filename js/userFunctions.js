@@ -6,7 +6,6 @@ function userLogout(){
         sessionStorage.removeItem("image")
         sessionStorage.removeItem("bio")
         refreshLoggedinUserData();
-        updateUserGUI();
     }); 
 }
 function refreshLoggedinUserData(){

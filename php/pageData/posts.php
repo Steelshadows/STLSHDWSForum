@@ -16,6 +16,9 @@
           console.log(res);
         });
     });
+
+
+    loadPostsDate();
 </script>    
 <div class="row">
     <div class="col-10">
@@ -28,14 +31,14 @@
             </form>
         </div>
         <div class="view_post">
-            <div class="row m-2 bg-light">
+            <!-- <div class="row m-2 bg-light">
                 <h1 class="col-12">Post title:</h1>
                 <p class="col-12">Lorem ipsum, dolor sit amet consectetur adipisicing elit...</p>
             </div>
             <div class="row m-2 bg-light">
                 <h1 class="col-12">Post title:</h1>
                 <p class="col-12">Lorem ipsum, dolor sit amet consectetur adipisicing elit...</p>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="col-2">
