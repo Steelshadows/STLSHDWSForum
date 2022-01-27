@@ -34,5 +34,7 @@ function getPosts($data){
         }else{
             return ['success'=>false,"error"=>"loading_posts_failed"];
         }
+    }else{
+        return ['success'=>false,"error"=>"user_not_logged_in"];
     }
 }

@@ -34,11 +34,14 @@ function userLoginCheck($data){
     $params = [$username];
     $userData = $db_connection->fetchQuery($sql,$params);
     // var_dump($userData);
-    
-    if(password_verify($password,$userData["password"])){        
-        return ['success'=>true,"loginStatus"=>setSessionUser($userData['uid'])];
+    if($userData != false){
+        if(password_verify($password,$userData["password"])){        
+            return ['success'=>true,"loginStatus"=>setSessionUser($userData['uid'])];
+        }else{
+            return ['success'=>false,"error"=>"passwords_dont_match"];
+        }
     }else{
-        return ['success'=>false,"error"=>"passwords_dont_match"];
+        return ['success'=>false,"error"=>"username_not_found"];
     }
 }
 function setSessionUser($uid){

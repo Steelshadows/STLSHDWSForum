@@ -4,3 +4,13 @@
     max-height: 300px;
     max-width: 300px;
 }
+.post_user_image{
+    height:50px;
+    width:auto;
+    max-height: 100px;
+    max-width: 100px;
+}
+.link:hover{
+    text-decoration: underline;
+    cursor: crosshair;
+}

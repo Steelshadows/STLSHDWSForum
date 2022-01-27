@@ -29,6 +29,7 @@ function goToUrl(url,data){
         document.querySelectorAll("hideOnUrlChange").forEach((item,key)=>{
             item.classList.add("d-none");
         });
+        updateUserGUI();
     });
 }
 function goToPage(url,data){

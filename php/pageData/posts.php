@@ -42,6 +42,6 @@
         </div>
     </div>
     <div class="col-2">
-        <button class="m-2 view_post" id="createPost">add post</button>
+        <button class="m-2 view_post user_logged_in d-none" id="createPost">add post</button>
     </div>
 </div>

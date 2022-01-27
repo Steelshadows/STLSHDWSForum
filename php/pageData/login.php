@@ -36,8 +36,9 @@
 
       doRequest('php/action.php?action=userLoginCheck',formDataJson,(res)=>{
         console.log(res);
+        results = JSON.parse(res);
         refreshLoggedinUserData();
-        goToPage('myBioPage')
+        if(results.success)goToPage('myBioPage');
       });
     });
   </script>
