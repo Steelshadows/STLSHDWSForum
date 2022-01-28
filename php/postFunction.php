@@ -4,6 +4,8 @@ function saveNewPost($data){
         
         $db_connection = new db_connection();
 
+        var_dump($data);
+
         $uid = $_SESSION['userData']["uid"];
         $title = $data["title"];
         $content = $data["content"];

@@ -17,6 +17,9 @@
 <script src="js/userFunctions.js"></script>
 <script src="js/postFunctions.js"></script>
 
+<script src="js/ckeditor/ckeditor.js"></script>
+
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" onclick="goToPage('posts')">STLSHDWS Forms</a>

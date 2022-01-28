@@ -10,12 +10,22 @@
         ev.preventDefault();
         postData = {
             "title":document.getElementById("postTitle").value,
-            "content":document.getElementById("postContent").value.replace(/(\r\n|\r|\n)/g, '\\n')
+            "content":document.querySelector(".ck-content").innerHTML.replace(/"/g, '\\"')
         } ;
+        console.log(postData);
         doRequest('php/action.php?action=saveNewPost',postData,(res)=>{
           console.log(res);
         });
     });
+
+    ClassicEditor
+    .create( document.querySelector( '#postContent' ) )
+    .then( editor => {
+        console.log( editor );
+    } )
+    .catch( error => {
+        console.error( error );
+    } );
 
 
     loadPostsDate();
@@ -25,7 +35,7 @@
         <div class="create_post d-none">
             <h1>create post</h1>    
             <form id="newPostForm">
-                <div class="row m-2"><label class="col-3">Post title:</label><input id="postTitle" name="postTitle" class="col-6" type="text" placeholder="Post title"></div>
+                <div class="row m-2"><label class="col-3">Post title:</label><input id="postTitle" name="postTitle" class="col-6" type="text"></div>
                 <div class="row m-2"><label class="col-12">content:</label><textarea id="postContent" name="content" class="col-9" type="text" placeholder="Post contents"></textarea></div>
                 <div class="row m-2"><input class="col-9" id="submitPost" name="p-submit" type="submit" value="submit post!"></div>
             </form>

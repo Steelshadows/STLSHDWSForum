@@ -12,27 +12,25 @@
 ?>
   <script type="temp">    
     refreshLoggedinUserData();
-
+    
     
   </script>
   <div class="row justify-content-center">
     <div class="col-12">
       <div class="row m-2">
       <h1>
-        <?=$post["title"]?>
+        <?=($post["title"] != "")?$post["title"]:"Titleless post";?>
       </h1>
       </div>
       <div class="row m-2">
         <div id="post">
-          
-
-
           <div class="row col-4 user_box">
             <div class="col-5">
               <img class="post_user_image" src="<?=$post["image"]?>">
             </div>
             <div class="col-7">
               <p class="link user_ref_link" url="guestBioPage" uid="<?=$post["uid"]?>"><?=$post["alias"]?></p>
+              <p class="date"><?=$post["date"]?></p>
             </div>
           </div>
           <div class="col-8">
@@ -41,9 +39,14 @@
             <?=$post["content"]?>
             </p>
             <?php 
-              var_dump($post);
+              // var_dump($post);
             ?>
           
+          </div>
+          <div class="row col-12 reaction_box">
+            <div class="col-12 reaction_creation_box">
+
+            </div>
           </div>
         </div>
       </div>

@@ -1,7 +1,15 @@
 //this function creates the html elements needed to view all posts
 function createPostBlock(target,pid,uid,titleText,contentText,date,userAlias,userImageSrc){
+    var div = document.createElement("div");
+    div.innerHTML = contentText;
+    var text = div.textContent || div.innerText || "";
+
+    contentText = text;
+    titleText = (titleText != "")?titleText:"Titleless post";
+
     container = document.createElement('div');
     container.className = "row m-2 bg-light";
+    container.setAttribute("date",date)
     
     title = document.createElement('h1');
     title.className = "col-12";
@@ -40,7 +48,7 @@ function createPostBlock(target,pid,uid,titleText,contentText,date,userAlias,use
     content = document.createElement('p');
     content.className = "col-8";
     content.innerText = contentText;
-    contentAllowedLength = 30;
+    contentAllowedLength = 10;
     if(contentText.length > contentAllowedLength){
         content.innerText = '';
         for(x=0;x<contentAllowedLength;x++){
@@ -66,10 +74,57 @@ function createPostBlock(target,pid,uid,titleText,contentText,date,userAlias,use
     
     userBox.appendChild(userImageBox);
     userBox.appendChild(userTextBox);
-    content.appendChild(userBox);
+    //content.appendChild(userBox);
     content.appendChild(postLink);
 
     container.appendChild(title);
+    container.appendChild(userBox);
+    container.appendChild(content);
+    target.appendChild(container);
+}
+function createReactionBlock(target,uid,contentText,date,userAlias,userImageSrc){
+    contentText = contentText.replace(/<br>/g, '\n')
+
+    container = document.createElement('div');
+    container.className = "row m-2 bg-light";
+    container.setAttribute("date",date)
+    
+    userBox = document.createElement('div');
+    userBox.className = "row col-4";
+    
+    userImageBox = document.createElement('div');
+    userImageBox.className = "col-5";
+    userImage = document.createElement('img');
+    userImage.className = "post_user_image";
+    userImage.setAttribute("src", userImageSrc);
+    userImageBox.appendChild(userImage);
+    
+    userTextBox = document.createElement('div');
+    userTextBox.className = "col-7";
+
+    userLink = document.createElement('p');
+    userLink.className = "link";
+    userLinkUrl = 'guestBioPage';
+    userLink.setAttribute("url", userLinkUrl);
+    userLink.setAttribute("uid", uid);
+    userLink.addEventListener("click",(ev)=>{
+        //console.log(ev.target);
+        el = ev.target;
+        path = el.getAttribute("url");
+        data = {"uid":el.getAttribute("uid")};
+        goToPage(path,data);
+    });
+    userLink.innerText = userAlias;
+    userTextBox.appendChild(userLink);
+    
+    content = document.createElement('p');
+    content.className = "col-8";
+    content.innerText = contentText;
+    
+    userBox.appendChild(userImageBox);
+    userBox.appendChild(userTextBox);
+    content.appendChild(userBox);
+
     container.appendChild(userBox);
     container.appendChild(content);
     target.appendChild(container);

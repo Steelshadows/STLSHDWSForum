@@ -11,6 +11,7 @@ include_once('postFunction.php');
 //get data and fire function
 if(isset($_GET["action"])){
     $data = json_decode(stripslashes(file_get_contents("php://input")),true);
+    //var_dump(stripslashes(file_get_contents("php://input")));
     $funcName = $_GET["action"];    
     echo json_encode($funcName($data));
 }
