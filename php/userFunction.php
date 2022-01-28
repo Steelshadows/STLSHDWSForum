@@ -108,4 +108,22 @@ function saveProfileEdits($data){
     }
     return ["success"=>false,"error"=>"edits_could_not_be_saved","data"=>$data];
 }
+function getSpecificUser($data){
+    $uid = $data["uid"];
+    if(isset($_SESSION['userData']["uid"])){
+        
+        $db_connection = new db_connection();
+        
+        $sql = "SELECT `username`,`email`,`alias`,`image`,`bio` FROM `users` WHERE `uid` = ?";
+        $params = [$uid];
+        $result = $db_connection->fetchQuery($sql,$params);
+        if(!!$result){                
+            return ['success'=>true,"user"=>$result];
+        }else{
+            return ['success'=>false,"error"=>"loading_posts_failed"];
+        }
+    }else{
+        return ['success'=>false,"error"=>"user_not_logged_in"];
+    }
+}
 ?>
