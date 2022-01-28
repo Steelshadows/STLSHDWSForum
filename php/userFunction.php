@@ -18,12 +18,12 @@ function saveNewUser($data){
             $params = [$username,$alias,"img/path.jpg",$passwordEncode];
             $db_connection->Query($sql,$params);
             
-            return ['success'=>true,"loginCheck"=>setSessionUserCheck([["value"=>$username],["value"=>$password]])];
+            return ['success'=>true,"loginCheck"=>userLoginCheck([["value"=>$username],["value"=>$password]])];
         }else{
             return ['success'=>false,"error"=>"username_exists"];
         }
     }
-    return ['success'=>false,"error"=>"passwords_dont_match","pass"=>$data];
+    return ['success'=>false,"error"=>"passwords_dont_match"];
 } 
 function userLoginCheck($data){
     $username = $data[0]["value"];
