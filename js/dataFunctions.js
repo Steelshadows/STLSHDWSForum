@@ -59,8 +59,12 @@ function goToPage(url,data){
     goToUrl($urls[url],data);
 }
 function reloadPage(){
-    url = document.location.hash.split("?")[0];
-    data = "?"+document.location.hash.split("?")[1];
-    url = url.split("#")[1];
-    goToPage(url,data);
+    if(document.location.hash != "undefined" && document.location.hash != "#undefined" && document.location.hash != ""){
+        url = document.location.hash.split("?")[0];
+        data = "?"+document.location.hash.split("?")[1];
+        url = url.split("#")[1];
+        goToPage(url,data);
+    }else{
+        goToPage("posts");
+    }
 }

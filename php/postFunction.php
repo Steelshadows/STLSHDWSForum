@@ -48,7 +48,7 @@ function getSpecificPost($data){
         $params = [$pid];
         $result = $db_connection->fetchQuery($sql,$params);
         if(!!$result){                
-            return ['success'=>true,"posts"=>$result];
+            return ['success'=>true,"post"=>$result];
         }else{
             return ['success'=>false,"error"=>"loading_posts_failed"];
         }

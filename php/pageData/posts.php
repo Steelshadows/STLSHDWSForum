@@ -10,7 +10,7 @@
         ev.preventDefault();
         postData = {
             "title":document.getElementById("postTitle").value,
-            "content":document.getElementById("postContent").value
+            "content":document.getElementById("postContent").value.replace(/(\r\n|\r|\n)/g, '\\n')
         } ;
         doRequest('php/action.php?action=saveNewPost',postData,(res)=>{
           console.log(res);

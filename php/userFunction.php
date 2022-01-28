@@ -1,9 +1,10 @@
 <?php
 function saveNewUser($data){
     $username = $data[0]["value"];
-    $alias = $data[1]["value"];
-    $password = $data[2]["value"];
-    $passwordAgain = $data[3]["value"];
+    $email = $data[1]["value"];
+    $alias = $data[2]["value"];
+    $password = $data[3]["value"];
+    $passwordAgain = $data[4]["value"];
     $passwordEncode = password_hash($password,PASSWORD_BCRYPT);
 
     if($password == $passwordAgain){
@@ -22,7 +23,7 @@ function saveNewUser($data){
             return ['success'=>false,"error"=>"username_exists"];
         }
     }
-    return ['success'=>false,"error"=>"passwords_dont_match"];
+    return ['success'=>false,"error"=>"passwords_dont_match","pass"=>$data];
 } 
 function userLoginCheck($data){
     $username = $data[0]["value"];
