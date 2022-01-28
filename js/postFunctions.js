@@ -145,14 +145,14 @@ function loadPostsDate(){
 
     }); 
 }
-function loadPostsDate(){
-    doRequest('php/action.php?action=getPosts',(res)=>{
+function loadReactions($pid){
+    doRequest('php/action.php?action=getReactions',{"pid":$pid},(res)=>{
         results = JSON.parse(res);
         if(results["success"]){
-            posts = results["posts"];
-            posts.forEach((item)=>{
-                createPostBlock(document.querySelector("div.view_post"),item.pid,item.uid,item.title,item.content,item.date,item.alias,item.image)
-                //console.log(item);
+            reactions = results["reactions"];
+            reactions.forEach((item)=>{
+                console.log(item);
+                createReactionBlock(document.querySelector("div.reaction_view_box"),item.uid,item.content,item.date,item.alias,item.image)
             });
 
         }else if(results["error"] == "user_not_logged_in"){

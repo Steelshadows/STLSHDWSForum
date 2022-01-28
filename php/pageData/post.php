@@ -12,8 +12,19 @@
 ?>
   <script type="temp">    
     refreshLoggedinUserData();
+    loadReactions(<?=$_GET["pid"]?>);
     
-    
+    document.getElementById("newReactionForm").addEventListener("submit",(ev)=>{
+        ev.preventDefault();
+        postData = {
+            "pid":<?=$_GET["pid"]?>,
+            "content":document.querySelector("#reactionContent").value
+        } ;
+        console.log(postData);
+        doRequest('php/action.php?action=saveNewReaction',postData,(res)=>{
+          console.log(res);
+        });
+    });
   </script>
   <div class="row justify-content-center">
     <div class="col-12">
@@ -45,7 +56,12 @@
           </div>
           <div class="row col-12 reaction_box">
             <div class="col-12 reaction_creation_box">
-
+              <form id="newReactionForm">
+                <div class="row m-2"><textarea id="reactionContent" name="content" class="col-6" type="text" placeholder="Reaction contents"></textarea></div>
+                <div class="row m-2"><input class="col-6" id="submitReaction" name="r-submit" type="submit" value="Submit reaction!"></div>
+              </form>
+            </div>
+            <div class="col-12 reaction_view_box">
             </div>
           </div>
         </div>

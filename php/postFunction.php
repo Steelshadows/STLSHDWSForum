@@ -4,14 +4,32 @@ function saveNewPost($data){
         
         $db_connection = new db_connection();
 
-        var_dump($data);
-
         $uid = $_SESSION['userData']["uid"];
         $title = $data["title"];
         $content = $data["content"];
         
         $sql = "INSERT INTO `posts` (`uid`, `title`, `content`, `date`) VALUES (?, ?, ?, current_timestamp())";
         $params = [$uid,$title,$content];
+        if($db_connection->Query($sql,$params)){                
+            return ['success'=>true];
+        }else{
+            return ['success'=>false,"error"=>"creating_post_failed"];
+        }
+    }
+}
+function saveNewReaction($data){
+
+    //return ['success'=>false,"data"=>$data];
+    if(isset($_SESSION['userData']["uid"])){
+        
+        $db_connection = new db_connection();
+
+        $uid = $_SESSION['userData']["uid"];
+        $pid = $data["pid"];
+        $content = $data["content"];
+        
+        $sql = "INSERT INTO `reactions` (`pid`, `uid`, `content`, `date`) VALUES (?, ?, ?, current_timestamp())";
+        $params = [$pid,$uid,$content];
         if($db_connection->Query($sql,$params)){                
             return ['success'=>true];
         }else{
@@ -51,6 +69,24 @@ function getSpecificPost($data){
         $result = $db_connection->fetchQuery($sql,$params);
         if(!!$result){                
             return ['success'=>true,"post"=>$result];
+        }else{
+            return ['success'=>false,"error"=>"loading_posts_failed"];
+        }
+    }else{
+        return ['success'=>false,"error"=>"user_not_logged_in"];
+    }
+}
+function getReactions($data){
+    $pid = $data["pid"];
+    if(isset($_SESSION['userData']["uid"])){
+        
+        $db_connection = new db_connection();
+        
+        $sql = "SELECT reactions.uid, reactions.content, reactions.date, users.alias, users.image FROM `reactions` LEFT JOIN users ON reactions.uid = users.uid WHERE reactions.pid = ? ORDER BY date DESC";
+        $params = [$pid];
+        $results = $db_connection->fetchAllQuery($sql,$params);
+        if(count($results) >= 1){                
+            return ['success'=>true,"reactions"=>$results];
         }else{
             return ['success'=>false,"error"=>"loading_posts_failed"];
         }
