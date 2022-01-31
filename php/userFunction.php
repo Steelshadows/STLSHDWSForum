@@ -14,7 +14,7 @@ function saveNewUser($data){
         $params = [$username];
         $exists = $db_connection->fetchQuery($sql,$params);
         if($exists == false){
-            $sql = "INSERT INTO `users` (`username`, `alias`, `image`, `password`) VALUES (?, ?, ?, ?)";
+            $sql = "INSERT INTO `users` (`username`, `alias`, `image`, `password`, `email`) VALUES (?, ?, ?, ?, ?)";
             $params = [$username,$alias,"img/path.jpg",$passwordEncode];
             $db_connection->Query($sql,$params);
             
@@ -51,7 +51,7 @@ function setSessionUser($uid){
     $db_connection = new db_connection();
     
     if(is_int( $uid )){
-        $sql = "SELECT `uid`,`username`,`alias`,`image`,`bio` FROM `users` WHERE `uid` = ?";
+        $sql = "SELECT `uid`,`username`,`alias`,`image`,`bio`,`email` FROM `users` WHERE `uid` = ?";
         $params = [$uid];
         $userData = $db_connection->fetchQuery($sql,$params);
         $_SESSION['userData']=$userData;

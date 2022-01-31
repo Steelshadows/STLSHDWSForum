@@ -2,7 +2,20 @@
   $data = json_decode(stripslashes(file_get_contents("php://input")),true);
 ?>
   <script type="temp">    
-    refreshLoggedinUserData();
+     
+  
+    refreshLoggedinUserData(function (){
+      ClassicEditor
+      .create( document.querySelector( '#bio_editor' ) )
+      .then( editor => {
+          console.log( editor );
+          CKEditor = editor;
+          editor.setData(sessionStorage.getItem("bio"));
+      } )
+      .catch( error => {
+          console.error( error );
+      } ); 
+    });
 
     const reader = new FileReader();
     function previewProfileImage(){
@@ -19,9 +32,14 @@
     document.getElementById("viewMyPage").addEventListener("click",(ev)=>{
       document.querySelectorAll(".bio-edit").forEach((item,key)=>{item.classList.add('d-none')})
       document.querySelectorAll(".bio-view").forEach((item,key)=>{item.classList.remove('d-none')})
+
+      //refresh data
+      document.querySelectorAll('.display_bio').forEach((item)=>{
+        console.log(item.innerHTML = document.querySelector(".ck-content").innerHTML.replace(/"/g, '\\"'))
+      });
     });
     document.getElementById("bio_editor").addEventListener("change",(ev)=>{
-      document.getElementById("bio_container").innerText = document.getElementById("bio_editor").value;
+      document.getElementById("bio_container").innerHTML = document.getElementById("bio_editor").value;
     });
     document.getElementById("alias_editor").addEventListener("change",(ev)=>{
       document.querySelectorAll(".display_alias").forEach((item,key)=>{
@@ -48,7 +66,7 @@
         };
       }else{
 
-        change_data.push({"type":"bio","data":document.getElementById("bio_editor").value});
+        change_data.push({"type":"bio","data":document.querySelector(".ck-content").innerHTML.replace(/"/g, '\\"')});
         change_data.push({"type":"alias","data":document.getElementById("alias_editor").value});
         console.log(change_data);
         doRequest('php/action.php?action=saveProfileEdits',change_data,(res)=>{
@@ -57,7 +75,7 @@
         });
       }
     });
-
+    
     
   </script>
   <div class="row justify-content-center">
@@ -75,8 +93,10 @@
       <div class="row m-2 ">
         <div id="bio_container" class="display_bio bio-view"></div>
         <label class="bio-edit d-none">Bio text:</label>
-        <textarea id="bio_editor" class="display_bio bio-edit d-none">
-        </textarea>
+        <div id="" class="bio-edit d-none editor_box">
+          <textarea id="bio_editor" class="display_bio bio-edit d-none">
+          </textarea>
+        </div>
       </div>
     </div>
     <div class="col-2">

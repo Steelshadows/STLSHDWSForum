@@ -8,7 +8,7 @@ function userLogout(){
         refreshLoggedinUserData();
     }); 
 }
-function refreshLoggedinUserData(){
+function refreshLoggedinUserData(callback){
     sessionStorage.removeItem("uid");
     sessionStorage.removeItem("alias");
     sessionStorage.removeItem("username");
@@ -24,7 +24,8 @@ function refreshLoggedinUserData(){
             sessionStorage.setItem("bio",res.data.bio);
             
         }  
-        updateUserGUI();      
+        updateUserGUI(); 
+        if(typeof callback == "function")callback();
     });
 }
 function updateUserGUI(){
@@ -60,7 +61,7 @@ function updateUserGUI(){
             item.src =  sessionStorage.getItem("image");  
         })
         document.querySelectorAll(".display_bio").forEach((item,key)=>{
-            item.innerText =  sessionStorage.getItem("bio");  
+            item.innerHTML =  sessionStorage.getItem("bio");  
         })
     }
     // END: fill data tags based on the logged in user
