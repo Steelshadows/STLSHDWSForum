@@ -6,12 +6,14 @@ function doRequest(url,arg1,arg2){
         if (this.readyState == 4 && this.status == 200) {
             res = this.responseText;
             callback(res);
-            resParse = JSON.parse(res);
-            console.log(resParse);
-            message += (!!resParse["msg"])? "?" + resParse["msg"]:"";
-            error += (!!resParse["error"])? "?" + resParse["error"]:"";
-            if(message != "")showNoti(message,"");
-            if(error != "")showNoti(error,"error");
+            if(res[0]=="{"){
+                resParse = JSON.parse(res);
+                console.log(resParse);
+                message += (!!resParse["msg"])? "?" + resParse["msg"]:"";
+                error += (!!resParse["error"])? "?" + resParse["error"]:"";
+                if(message != "")showNoti(message,"");
+                if(error != "")showNoti(error,"error");
+            }
         }
     };
     var post;
@@ -78,7 +80,7 @@ function reloadPage(){
 }
 function showNoti(message,type){
     if(message[0] != "?"){
-        values = notiCodeToText(item)
+        values = notiCodeToText(message)
         if (typeof values == "object")addNotificationHTML(values.msg,values.title,type)
         if (typeof values == "string")addNotificationHTML(values,"",type)
     }else if(message[0] == "?"){
@@ -98,14 +100,14 @@ function addNotificationHTML(contentText, title, type, code){
     titleText = (title != "" && typeof title != "undefined")?title:type;
     
     container = document.createElement('div');
-    container.className = "row m-2 bg-light "+code;
+    container.className = "row m-2 bg-light rounded-3 "+code;
     // container.addEventListener("click",(ev)=>{
     //     document.querySelector("#notification-box").innerHTML = "";
     // })
 
     closeBtn = document.createElement('div');
     closeBtn.innerHTML = "X";
-    closeBtn.className = "closeBtn ";
+    closeBtn.className = "closeBtn float-end";
     closeBtn.setAttribute("code",code);
     closeBtn.addEventListener("click",(ev)=>{
         code = ev.target.getAttribute("code");
@@ -116,18 +118,18 @@ function addNotificationHTML(contentText, title, type, code){
     
     title = document.createElement('h1');
     if(type == "success"){
-        title.className = "col-12 bg-success";
+        title.className = "col-12 rounded-3 bg-success";
     }else if(type == "error"){
-        title.className = "col-12 bg-danger";
+        title.className = "col-12 rounded-3 bg-danger";
     }else{
-        title.className = "col-12";
+        title.className = "col-12 rounded-3";
     }
 
     title.innerText = titleText;
     content = document.createElement('p');
     content.className = "col-8";
     content.innerText = contentText;
-    container.appendChild(closeBtn);
+    title.appendChild(closeBtn);
     container.appendChild(title);
     container.appendChild(content);
     if(document.querySelectorAll("."+code).length == 0){
@@ -137,39 +139,52 @@ function addNotificationHTML(contentText, title, type, code){
 function notiCodeToText(code){
     codeArray = {
         "msg":{
-            "title":"bericht",
-            "msg":"berichtgeving",
+            "title":"Message",
+            "msg":"Message Template",
         },
         "loading_posts_failed":{
             "title":"",
-            "msg":"failed to load posts",
+            "msg":"Failed to load posts",
         },
-        "loading_posts_failed":{
+        "loading_reactions_failed":{
             "title":"",
-            "msg":"failed to load reactions",
+            "msg":"Failed to load reactions",
         },
         "user_not_logged_in":{
             "title":"",
-            "msg":"user is not logged in",
+            "msg":"User is not logged in",
         },
         "login_check_passed":{
             "title":"",
-            "msg":"user is now logged in",
+            "msg":"User is now logged in",
         },
         "reaction_posted":{
             "title":"",
-            "msg":"reaction has been successfully posted",
+            "msg":"Reaction has been successfully posted",
+        },
+        "post_posted":{
+            "title":"",
+            "msg":"Post has been successfully posted",
         },
         "edits_saved":{
             "title":"",
-            "msg":"edits successfully applied",
+            "msg":"Edits successfully applied",
+        },
+        "post_does_not_exist":{
+            "title":"",
+            "msg":"This post could not be found",
+        },
+        "user_does_not_exist":{
+            "title":"",
+            "msg":"This user could not be found",
         },
     }
 
-    console.log(code);
-    console.log(codeArray[code]);
-    console.log(typeof codeArray[code]);
-    console.log(typeof codeArray[code] == "string");
-    res = (typeof codeArray[code] == "object")?codeArray[code]:code;
+    // console.log(code);
+    // console.log(codeArray[code]);
+    // console.log(typeof codeArray[code]);
+    // console.log(typeof codeArray[code] == "string");
+    res = (typeof codeArray[code] == "object")?codeArray[code]:{"title":" ","msg":code};
+    console.log(res);
     return res;
 }

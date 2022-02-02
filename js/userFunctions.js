@@ -6,6 +6,7 @@ function userLogout(){
         sessionStorage.removeItem("image")
         sessionStorage.removeItem("bio")
         refreshLoggedinUserData();
+        goToPage("login");
     }); 
 }
 function refreshLoggedinUserData(callback){
@@ -39,6 +40,7 @@ function updateUserGUI(){
         document.querySelectorAll(".user_logged_in").forEach((item,key)=>{
             item.classList.remove("d-none")    
         })
+        document.querySelectorAll(".user-"+sessionStorage.getItem("uid")).forEach((item)=>{item.classList.remove("d-none")});
     }else{
         document.querySelectorAll(".user_logged_out").forEach((item,key)=>{
             item.classList.remove("d-none")    

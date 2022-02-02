@@ -133,6 +133,7 @@ function loadPostsDate(){
     doRequest('php/action.php?action=getPosts',(res)=>{
         results = JSON.parse(res);
         if(results["success"]){
+            document.querySelector("div.view_post").innerHTML = "";
             posts = results["posts"];
             posts.forEach((item)=>{
                 createPostBlock(document.querySelector("div.view_post"),item.pid,item.uid,item.title,item.content,item.date,item.alias,item.image)

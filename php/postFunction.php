@@ -11,7 +11,7 @@ function saveNewPost($data){
         $sql = "INSERT INTO `posts` (`uid`, `title`, `content`, `date`) VALUES (?, ?, ?, current_timestamp())";
         $params = [$uid,$title,$content];
         if($db_connection->Query($sql,$params)){                
-            return ['success'=>true];
+            return ['success'=>true,"msg"=>"post_posted"];
         }else{
             return ['success'=>false,"error"=>"creating_post_failed"];
         }
@@ -46,7 +46,7 @@ function getPosts($data){
         
         $db_connection = new db_connection();
         
-        $sql = "SELECT posts.pid,posts.uid,posts.title,posts.content,posts.date, users.alias, users.image FROM `posts` LEFT JOIN users ON posts.uid = users.uid ORDER BY date DESC";
+        $sql = "SELECT posts.pid,posts.uid,posts.title,posts.content,posts.date, users.alias, users.image FROM `posts`  LEFT JOIN users ON posts.uid = users.uid WHERE `status` = 'active' ORDER BY date DESC";
         $params = [];
         $results = $db_connection->fetchAllQuery($sql,$params);
         if(count($results) >= 1){                
@@ -59,7 +59,8 @@ function getPosts($data){
     }
 }
 function getSpecificPost($data){
-    $pid = $data["pid"];
+    // return $data;
+    $pid = $data['pid'];
     if(isset($_SESSION['userData']["uid"])){
         
         $db_connection = new db_connection();
@@ -93,4 +94,62 @@ function getReactions($data){
     }else{
         return ['success'=>false,"error"=>"user_not_logged_in"];
     }
+}
+function savePostEdits($data){
+    $post = getSpecificPost(['pid'=>$data["pid"]]);
+    // return $post;
+    if(isset($_SESSION['userData']["uid"])){
+        if($_SESSION["userData"]["uid"] == $post["post"]["uid"]){
+            // return $data;
+            $pid = $data["pid"];
+            $db_connection = new db_connection();
+
+            foreach($data["edits"] as $key=>$edit){
+                $value = $edit["data"];
+                switch($edit["type"]){
+                    case "title":
+                        $sql = "UPDATE `posts` SET `title`=? WHERE `pid` = ?";
+                        break;
+                        case "content":
+                        $sql = "UPDATE `posts` SET `content`=? WHERE `pid` = ?";
+                        break;
+                    default:
+                    $sql = "";
+                        
+                }
+                $params = [$value,$pid];
+                $userData = $db_connection->Query($sql,$params);
+                if(count($data)-1 == $key){
+                    return ["success"=>true,"msg"=>"edits_saved"];
+                }
+            }
+            return ["success"=>false,"error"=>"edits_could_not_be_saved"];
+        }else{
+            return ['success'=>false,"error"=>"user_not_owner"];
+        }
+    }else{
+        return ['success'=>false,"error"=>"user_not_logged_in"];
+    }      
+}
+function hidePost($data){
+    $post = getSpecificPost(['pid'=>$data["pid"]]);
+    if(isset($_SESSION['userData']["uid"])){
+        if($_SESSION["userData"]["uid"] == $post["post"]["uid"]){
+            // return $data;
+            $pid = $data["pid"];
+            $db_connection = new db_connection();
+
+            $sql = "UPDATE `posts` SET `status`='hidden' WHERE `pid` = ?";
+            $params = [$pid];
+            $userData = $db_connection->Query($sql,$params);
+            if($userData){
+                return ["success"=>true,"msg"=>"post_hidden"];
+            }
+            return ["success"=>false,"error"=>"post_could_not_be_hidden"];
+        }else{
+            return ['success'=>false,"error"=>"user_not_owner"];
+        }
+    }else{
+        return ['success'=>false,"error"=>"user_not_logged_in"];
+    }  
 }

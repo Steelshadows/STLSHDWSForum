@@ -14,7 +14,12 @@
         } ;
         console.log(postData);
         doRequest('php/action.php?action=saveNewPost',postData,(res)=>{
-          console.log(res);
+            console.log(res);
+            document.getElementById("postTitle").innerHTML = "";
+            document.querySelector(".ck-content").innerHTML = "";
+            document.querySelectorAll(".view_post").forEach((item,key)=>{item.classList.remove('d-none')})
+            document.querySelectorAll(".create_post").forEach((item,key)=>{item.classList.add('d-none')})
+            loadPostsDate();
         });
     });
 

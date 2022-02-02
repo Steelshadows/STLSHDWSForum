@@ -1,14 +1,28 @@
 <?php
-    session_start();
-    //requires
-    require_once('../class/DB_class.php');
-    
-    //function includes
-    include_once('../userFunction.php');
-    include_once('../postFunction.php');
-    $data = json_decode(stripslashes(file_get_contents("php://input")),true);
+  session_start();
+  //requires
+  require_once('../class/DB_class.php');
   
-    $user = getSpecificUser(["uid"=>$_GET["uid"]])["user"];
+  //function includes
+  include_once('../userFunction.php');
+  include_once('../postFunction.php');
+  $data = json_decode(stripslashes(file_get_contents("php://input")),true);
+
+  $res = getSpecificUser(["uid"=>$_GET["uid"]]);
+  if(!isset($res["user"])){
+    $user = [];
+    $user["alias"] = "";
+    $user["image"] = "";
+    $user["bio"] = "er is iets mis gegaan";
+    ?>
+      <script type="temp"> 
+        showNoti("?user_does_not_exist","error");
+        goToPage("posts");
+      </script>
+    <?php
+  }else{
+    $user = $res["user"];
+  }
 ?>
   <script type="temp">    
     refreshLoggedinUserData();
