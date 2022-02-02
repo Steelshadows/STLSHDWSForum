@@ -9,19 +9,21 @@ function userLogout(){
     }); 
 }
 function refreshLoggedinUserData(callback){
-    sessionStorage.removeItem("uid");
     sessionStorage.removeItem("alias");
-    sessionStorage.removeItem("username");
-    sessionStorage.removeItem("image");
     sessionStorage.removeItem("bio");
+    sessionStorage.removeItem("email");
+    sessionStorage.removeItem("image");
+    sessionStorage.removeItem("uid");
+    sessionStorage.removeItem("username");
     doRequest('php/action.php?action=getUserFromSession',(res)=>{
         res = JSON.parse(res);
         if(res.success){
-            sessionStorage.setItem("uid",res.data.uid);
             sessionStorage.setItem("alias",res.data.alias);
-            sessionStorage.setItem("username",res.data.username);
-            sessionStorage.setItem("image",res.data.image);
             sessionStorage.setItem("bio",res.data.bio);
+            sessionStorage.setItem("email",res.data.email);
+            sessionStorage.setItem("image",res.data.image);
+            sessionStorage.setItem("uid",res.data.uid);
+            sessionStorage.setItem("username",res.data.username);
             
         }  
         updateUserGUI(); 

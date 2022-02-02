@@ -31,7 +31,7 @@ function saveNewReaction($data){
         $sql = "INSERT INTO `reactions` (`pid`, `uid`, `content`, `date`) VALUES (?, ?, ?, current_timestamp())";
         $params = [$pid,$uid,$content];
         if($db_connection->Query($sql,$params)){                
-            return ['success'=>true];
+            return ['success'=>true,"msg"=>"reaction_posted"];
         }else{
             return ['success'=>false,"error"=>"creating_post_failed"];
         }
@@ -70,7 +70,7 @@ function getSpecificPost($data){
         if(!!$result){                
             return ['success'=>true,"post"=>$result];
         }else{
-            return ['success'=>false,"error"=>"loading_posts_failed"];
+            return ['success'=>false,"error"=>"loading_post_failed"];
         }
     }else{
         return ['success'=>false,"error"=>"user_not_logged_in"];
@@ -88,7 +88,7 @@ function getReactions($data){
         if(count($results) >= 1){                
             return ['success'=>true,"reactions"=>$results];
         }else{
-            return ['success'=>false,"error"=>"loading_posts_failed"];
+            return ['success'=>false,"error_ignore"=>"loading_reactions_failed"];
         }
     }else{
         return ['success'=>false,"error"=>"user_not_logged_in"];

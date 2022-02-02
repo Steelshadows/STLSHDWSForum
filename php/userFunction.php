@@ -15,10 +15,10 @@ function saveNewUser($data){
         $exists = $db_connection->fetchQuery($sql,$params);
         if($exists == false){
             $sql = "INSERT INTO `users` (`username`, `alias`, `image`, `password`, `email`) VALUES (?, ?, ?, ?, ?)";
-            $params = [$username,$alias,"img/path.jpg",$passwordEncode];
+            $params = [$username,$alias,"img/path.jpg",$passwordEncode,$email];
             $db_connection->Query($sql,$params);
             
-            return ['success'=>true,"loginCheck"=>userLoginCheck([["value"=>$username],["value"=>$password]])];
+            return ['success'=>true,"loginCheck"=>userLoginCheck([["value"=>$username],["value"=>$password]]),"msg"=>"signup_complete"];
         }else{
             return ['success'=>false,"error"=>"username_exists"];
         }
@@ -37,7 +37,7 @@ function userLoginCheck($data){
     // var_dump($userData);
     if($userData != false){
         if(password_verify($password,$userData["password"])){        
-            return ['success'=>true,"loginStatus"=>setSessionUser($userData['uid'])];
+            return ['success'=>true,"loginStatus"=>setSessionUser($userData['uid']),"msg"=>"login_check_passed"];
         }else{
             return ['success'=>false,"error"=>"passwords_dont_match"];
         }
@@ -57,7 +57,7 @@ function setSessionUser($uid){
         $_SESSION['userData']=$userData;
         return ['success'=>true];
     }else{        
-        return ['success'=>false,"error"=>"uid_not_a_number"];
+        return ['success'=>false,"error_ignore"=>"uid_not_a_number"];
     }
 }
 function getUserFromSession(){
@@ -66,10 +66,10 @@ function getUserFromSession(){
         if(isset($_SESSION['userData'])){
             return ['success'=>true,'data'=>$_SESSION['userData']] ;
         }else{
-            return ['success'=>false,'error'=>"userdata_not_set"] ;
+            return ['success'=>false,'error_ignore'=>"userdata_not_set"] ;
         }
     }else{
-        return ['success'=>false,'error'=>"uid not set"] ;
+        return ['success'=>false,'error_ignore'=>"uid_not_set"] ;
     }
 }
 function userLogout(){
@@ -103,7 +103,7 @@ function saveProfileEdits($data){
         $params = [$value,$uid];
         $userData = $db_connection->Query($sql,$params);
         if(count($data)-1 == $key){
-            return ["success"=>true];
+            return ["success"=>true,"msg"=>"edits_saved"];
         }
     }
     return ["success"=>false,"error"=>"edits_could_not_be_saved","data"=>$data];
@@ -120,7 +120,7 @@ function getSpecificUser($data){
         if(!!$result){                
             return ['success'=>true,"user"=>$result];
         }else{
-            return ['success'=>false,"error"=>"loading_posts_failed"];
+            return ['success'=>false,"error"=>"user_not_found"];
         }
     }else{
         return ['success'=>false,"error"=>"user_not_logged_in"];

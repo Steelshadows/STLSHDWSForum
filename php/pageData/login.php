@@ -63,7 +63,7 @@
         <div class="row m-2"><input class="col-9" name="s-submit" type="submit" value="Sign up!"></div>
       </form>
     </div>
-    <div class="col-12 forgot_password">
+    <div class="col-12 forgot_password d-none">
       <h1>forgot password</h1>
       <form id="password_reset">
         <div class="row m-2"><label class="col-3">Username:</label><input name="username" class="col-6" type="text" placeholder="Username"></div>

@@ -1,9 +1,17 @@
 function doRequest(url,arg1,arg2){
+    message = "";
+    error = "";
     xhttp = new XMLHttpRequest;
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            res = this.responseText
+            res = this.responseText;
             callback(res);
+            resParse = JSON.parse(res);
+            console.log(resParse);
+            message += (!!resParse["msg"])? "?" + resParse["msg"]:"";
+            error += (!!resParse["error"])? "?" + resParse["error"]:"";
+            if(message != "")showNoti(message,"");
+            if(error != "")showNoti(error,"error");
         }
     };
     var post;
@@ -67,4 +75,101 @@ function reloadPage(){
     }else{
         goToPage("posts");
     }
+}
+function showNoti(message,type){
+    if(message[0] != "?"){
+        values = notiCodeToText(item)
+        if (typeof values == "object")addNotificationHTML(values.msg,values.title,type)
+        if (typeof values == "string")addNotificationHTML(values,"",type)
+    }else if(message[0] == "?"){
+        messages = message.split("?");
+        messages.shift();
+        messages.forEach((item)=>{
+            console.log(item);
+            //document.querySelector("#notification-box").innerHTML += notiCodeToText(item) +"<br>";
+            values = notiCodeToText(item)
+            if (typeof values == "object")addNotificationHTML(values.msg,values.title,type,item)
+            if (typeof values == "string")addNotificationHTML(values,"",type,item)
+        })
+    }    
+}
+function addNotificationHTML(contentText, title, type, code){
+    target = document.querySelector("#notification-box");
+    titleText = (title != "" && typeof title != "undefined")?title:type;
+    
+    container = document.createElement('div');
+    container.className = "row m-2 bg-light "+code;
+    // container.addEventListener("click",(ev)=>{
+    //     document.querySelector("#notification-box").innerHTML = "";
+    // })
+
+    closeBtn = document.createElement('div');
+    closeBtn.innerHTML = "X";
+    closeBtn.className = "closeBtn ";
+    closeBtn.setAttribute("code",code);
+    closeBtn.addEventListener("click",(ev)=>{
+        code = ev.target.getAttribute("code");
+        document.querySelectorAll("."+code).forEach((item)=>{
+            item.remove();
+        });
+    })
+    
+    title = document.createElement('h1');
+    if(type == "success"){
+        title.className = "col-12 bg-success";
+    }else if(type == "error"){
+        title.className = "col-12 bg-danger";
+    }else{
+        title.className = "col-12";
+    }
+
+    title.innerText = titleText;
+    content = document.createElement('p');
+    content.className = "col-8";
+    content.innerText = contentText;
+    container.appendChild(closeBtn);
+    container.appendChild(title);
+    container.appendChild(content);
+    if(document.querySelectorAll("."+code).length == 0){
+        target.appendChild(container);
+    }
+}
+function notiCodeToText(code){
+    codeArray = {
+        "msg":{
+            "title":"bericht",
+            "msg":"berichtgeving",
+        },
+        "loading_posts_failed":{
+            "title":"",
+            "msg":"failed to load posts",
+        },
+        "loading_posts_failed":{
+            "title":"",
+            "msg":"failed to load reactions",
+        },
+        "user_not_logged_in":{
+            "title":"",
+            "msg":"user is not logged in",
+        },
+        "login_check_passed":{
+            "title":"",
+            "msg":"user is now logged in",
+        },
+        "reaction_posted":{
+            "title":"",
+            "msg":"reaction has been successfully posted",
+        },
+        "edits_saved":{
+            "title":"",
+            "msg":"edits successfully applied",
+        },
+    }
+
+    console.log(code);
+    console.log(codeArray[code]);
+    console.log(typeof codeArray[code]);
+    console.log(typeof codeArray[code] == "string");
+    res = (typeof codeArray[code] == "object")?codeArray[code]:code;
+    return res;
 }

@@ -22,7 +22,7 @@
         } ;
         console.log(postData);
         doRequest('php/action.php?action=saveNewReaction',postData,(res)=>{
-          console.log(res);
+          loadReactions(<?=$_GET["pid"]?>);
         });
     });
   </script>

@@ -150,8 +150,8 @@ function loadReactions($pid){
         results = JSON.parse(res);
         if(results["success"]){
             reactions = results["reactions"];
+            document.querySelector("div.reaction_view_box").innerHTML = "";
             reactions.forEach((item)=>{
-                console.log(item);
                 createReactionBlock(document.querySelector("div.reaction_view_box"),item.uid,item.content,item.date,item.alias,item.image)
             });
 

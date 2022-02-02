@@ -52,5 +52,6 @@
   </div>
 </nav>
 <div class="container">
+    <div id="notification-box" class="notification-box"></div>
     <div id="content-box" class="content-box"></div>
 </div>
