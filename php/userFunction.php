@@ -169,10 +169,11 @@ function forgotPasswordSend($data){
     $key = generate_action_key(["uid"=>$uid,"action"=>"passwordReset"])["action_key"];
     
     // the message
-    $msg = "<a href='https://stlshdws.com/steelshadowsForms/#passwordReset?actionkey=$key'>verify</a>";
+    $msg = "go to the following URL to complete your password reset: \n https://stlshdws.com/steelshadowsForms/#passwordReset?actionkey=$key";
     
     // send email
-    //mail("stlshdws@gmail.com","My subject",$msg);
+    mail("stlshdws@gmail.com","password reset link",$msg);
+    
     if($uid == 0){
         return ["success"=>false,"error"=>"user_doesnt_exist"];
     }
