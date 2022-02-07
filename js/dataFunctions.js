@@ -64,6 +64,7 @@ function goToPage(url,data){
         "posts":"php/pageData/posts.php",
         "post":"php/pageData/post.php",
         "guestBioPage":"php/pageData/user.php",
+        "passwordReset":"php/pageData/passwordreset.php",
     };
     document.location.hash = url;
     goToUrl($urls[url],data);
@@ -177,6 +178,10 @@ function notiCodeToText(code){
         "user_does_not_exist":{
             "title":"",
             "msg":"This user could not be found",
+        },
+        "key_and_username_match":{
+            "title":"",
+            "msg":"key matches with username",
         },
     }
 

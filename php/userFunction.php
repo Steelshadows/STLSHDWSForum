@@ -7,18 +7,29 @@ function saveNewUser($data){
     $passwordAgain = $data[4]["value"];
     $passwordEncode = password_hash($password,PASSWORD_BCRYPT);
 
+    $email_check = filter_var($email, FILTER_VALIDATE_EMAIL);
+    if(!$email_check){
+        return ['success'=>false,"error"=>"email_not_valid"];
+    }
     if($password == $passwordAgain){
         $db_connection = new db_connection();
 
-        $sql = "SELECT * FROM `users` WHERE `username` = ?";
-        $params = [$username];
-        $exists = $db_connection->fetchQuery($sql,$params);
-        if($exists == false){
-            $sql = "INSERT INTO `users` (`username`, `alias`, `image`, `password`, `email`) VALUES (?, ?, ?, ?, ?)";
-            $params = [$username,$alias,"img/path.jpg",$passwordEncode,$email];
-            $db_connection->Query($sql,$params);
-            
-            return ['success'=>true,"loginCheck"=>userLoginCheck([["value"=>$username],["value"=>$password]]),"msg"=>"signup_complete"];
+        $sql_un = "SELECT * FROM `users` WHERE `username` = ?";
+        $params_un = [$username];
+        
+        $exists_un = $db_connection->fetchQuery($sql_un,$params_un);
+        if($exists_un == false){
+            if($exists_un == false){
+                $sql = "INSERT INTO `users` (`username`, `alias`, `image`, `password`, `email`) VALUES (?, ?, ?, ?, ?)";
+                $params = [$username,$alias,"img/path.jpg",$passwordEncode,$email];
+                if($success = $db_connection->Query($sql,$params)){
+                    return ['success'=>true,"loginCheck"=>userLoginCheck([["value"=>$username],["value"=>$password]]),"msg"=>"signup_complete"];
+                }else{
+                    return ['success'=>false,"error"=>"signup_failed"];
+                }
+            }else{
+                return ['success'=>false,"error"=>"email_exists"];
+            }
         }else{
             return ['success'=>false,"error"=>"username_exists"];
         }
@@ -124,6 +135,78 @@ function getSpecificUser($data){
         }
     }else{
         return ['success'=>false,"error"=>"user_not_logged_in"];
+    }
+}
+function generate_action_key($data){
+
+    $db_connection = new db_connection();
+    
+    $action = $data["action"];
+    $uid = $data["uid"];
+    $action_key = uniqid();
+    
+    $sql = "INSERT INTO `actionkeys` (`user_id`, `action`, `action_key`) VALUES (?, ?, ?)";
+    $params = [$uid,$action,$action_key];
+    $success = $db_connection->Query($sql,$params);
+    
+    return ['success'=>$success,"action_key"=>$action_key,];  
+}
+function forgotPasswordSend($data){
+    
+    $db_connection = new db_connection();
+    
+    //generates key and sends an email
+    if (isset($data["uid"])){
+        $uid = $data["uid"];
+    }else if(isset($data[0]["value"])){
+        $sql = "SELECT `uid`,`username`,`alias`,`image`,`bio`,`email` FROM `users` WHERE `username` = ?";
+        $params = [$data[0]["value"]];
+        $userData = $db_connection->fetchQuery($sql,$params);
+        $uid = (isset($userData["uid"]))?$userData["uid"]:0;
+    }else{
+        $uid = 0;
+    }
+    $key = generate_action_key(["uid"=>$uid,"action"=>"passwordReset"])["action_key"];
+    
+    // the message
+    $msg = "<a href='https://stlshdws.com/steelshadowsForms/#passwordReset?actionkey=$key'>verify</a>";
+    
+    // send email
+    //mail("stlshdws@gmail.com","My subject",$msg);
+    if($uid == 0){
+        return ["success"=>false,"error"=>"user_doesnt_exist"];
+    }
+    return ["success"=>true,"mail_content"=>$msg];
+    
+}
+function passKeyReset($data){
+
+    $db_connection = new db_connection();
+    
+    $sql = "SELECT `key_id`,`user_id`,`action`,`action_key` FROM `actionkeys` LEFT JOIN `users` ON `user_id` = `uid` WHERE `action_key` = ? AND `username` = ?";
+    $params = [$data["key"],$data["formData"][0]["value"]];
+    $action = $db_connection->fetchQuery($sql,$params);
+    
+    
+    if($action != false){
+        if($data["formData"][1]["value"] == $data["formData"][2]["value"]){
+            $password = $data["formData"][1]["value"];
+            $passwordEncode = password_hash($password,PASSWORD_BCRYPT);
+            
+            $sql = "UPDATE `users` SET `password`= ? WHERE `username` = ?";
+            $params = [$passwordEncode,$data["formData"][0]["value"]];
+            $success = $db_connection->Query($sql,$params);
+            
+            $sql_delete = "DELETE FROM `actionkeys` WHERE `action_key` = ?";
+            $params_delete = [$data["key"]];
+            $delete = $db_connection->Query($sql_delete,$params_delete);
+
+            return ["success"=>$success,"msg"=>"password_changed_".$success];
+        }else{            
+            return ["success"=>true,'error'=>'passwords_dont_match'];
+        }
+    }else{
+        return ["success"=>false,"error"=>"key_and_username_dont_match"];
     }
 }
 ?>
