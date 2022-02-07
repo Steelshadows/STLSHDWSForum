@@ -114,10 +114,10 @@ function saveProfileEdits($data){
         $params = [$value,$uid];
         $userData = $db_connection->Query($sql,$params);
         if(count($data)-1 == $key){
-            return ["success"=>true,"msg"=>"edits_saved"];
+            return ["success"=>true,"msg"=>"profile_edits_saved"];
         }
     }
-    return ["success"=>false,"error"=>"edits_could_not_be_saved","data"=>$data];
+    return ["success"=>false,"error"=>"profile_edits_could_not_be_saved","data"=>$data];
 }
 function getSpecificUser($data){
     $uid = $data["uid"];
@@ -169,11 +169,11 @@ function forgotPasswordSend($data){
     $key = generate_action_key(["uid"=>$uid,"action"=>"passwordReset"])["action_key"];
     
     if($uid == 0){
-        return ["success"=>false,"error"=>"user_doesnt_exist"];
+        return ["success"=>false,"error"=>"user_not_found"];
     }else{
         $msg = "go to the following URL to complete your password reset: \nhttps://stlshdws.com/steelshadowsForms/#passwordReset?actionkey=$key";
         mail($userData["email"],"password reset link",$msg);
-        return ["success"=>true,"mail_content"=>$msg];
+        return ["success"=>true];
     }
     
 }

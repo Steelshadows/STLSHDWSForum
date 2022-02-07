@@ -143,6 +143,22 @@ function notiCodeToText(code){
             "title":"Message",
             "msg":"Message Template",
         },
+        "post_posted":{
+            "title":"",
+            "msg":"Post has been successfully posted",
+        },
+        "reaction_posted":{
+            "title":"",
+            "msg":"Reaction has been successfully posted",
+        },
+        "creating_post_failed":{
+            "title":"",
+            "msg":"Something went wrong.\nYour post has not been posted",
+        },
+        "creating_reaction_failed":{
+            "title":"",
+            "msg":"Something went wrong.\nYour reaction has not been posted",
+        },
         "loading_posts_failed":{
             "title":"",
             "msg":"Failed to load posts",
@@ -155,21 +171,25 @@ function notiCodeToText(code){
             "title":"",
             "msg":"User is not logged in",
         },
+        "post_edits_saved":{
+            "title":"",
+            "msg":"Edits successfully applied",
+        },
+        "post_edits_could_not_be_saved":{
+            "title":"",
+            "msg":"Edits could not be applied",
+        },
+        "profile_edits_saved":{
+            "title":"",
+            "msg":"Edits successfully applied",
+        },
+        "profile_edits_could_not_be_saved":{
+            "title":"",
+            "msg":"Edits could not be applied",
+        },
         "login_check_passed":{
             "title":"",
             "msg":"User is now logged in",
-        },
-        "reaction_posted":{
-            "title":"",
-            "msg":"Reaction has been successfully posted",
-        },
-        "post_posted":{
-            "title":"",
-            "msg":"Post has been successfully posted",
-        },
-        "edits_saved":{
-            "title":"",
-            "msg":"Edits successfully applied",
         },
         "post_does_not_exist":{
             "title":"",
@@ -179,9 +199,69 @@ function notiCodeToText(code){
             "title":"",
             "msg":"This user could not be found",
         },
+        "key_and_username_dont_match":{
+            "title":"",
+            "msg":"Key does not match with username",
+        },
         "key_and_username_match":{
             "title":"",
-            "msg":"key matches with username",
+            "msg":"Key matches with username",
+        },
+        "user_not_owner":{
+            "title":"",
+            "msg":"You dont have permission to do this",
+        },
+        "post_hidden":{
+            "title":"",
+            "msg":"This post has been hidden successfully",
+        },
+        "post_could_not_be_hidden":{
+            "title":"",
+            "msg":"Something went wrong.\nThis post has not been hidden",
+        },
+        "signup_failed":{
+            "title":"",
+            "msg":"Something went wrong.\nYour account could not be made",
+        },
+        "passwords_dont_match":{
+            "title":"",
+            "msg":"Something went wrong.\nPasswords do not match",
+        },
+        "username_not_found":{
+            "title":"",
+            "msg":"Something went wrong.\nThis username could not be found",
+        },
+        "user_not_found":{
+            "title":"",
+            "msg":"Something went wrong.\nThis user could not be found",
+        },
+        "password_changed_1":{
+            "title":"",
+            "msg":"Password successfully changed",
+        },
+        "password_changed_0":{
+            "title":"",
+            "msg":"Something went wrong.\nPassword could not be changed",
+        },
+        "email_not_valid":{
+            "title":"",
+            "msg":"This email is not valid",
+        },
+        "signup_complete":{
+            "title":"",
+            "msg":"Signup was completed successfully\nWelcome to our forum",
+        },
+        "signup_failed":{
+            "title":"",
+            "msg":"Something went wrong.\nSignup could not be completed",
+        },
+        "username_exists":{
+            "title":"",
+            "msg":"Something went wrong.\nThis username is already in use",
+        },
+        "email_exists":{
+            "title":"",
+            "msg":"Something went wrong.\nThis email is already in use",
         },
     }
 
