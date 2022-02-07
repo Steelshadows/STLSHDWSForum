@@ -21,14 +21,12 @@
       };
       doRequest('php/action.php?action=passKeyReset',requestData,(res)=>{
         console.log(res);
-        refreshLoggedinUserData();
-        updateUserGUI();
+        goToPage('login');
       });
     });
   </script>
   <div class="row justify-content-center">
     <div class="col">
-      <?php var_dump($_GET) ?>
       <form id="pwresetForm">
         <div class="row m-2"><label class="col-3">Username:</label><input name="username" class="col-6" type="text" placeholder="Username"></div>
         <div class="row m-2"><label class="col-3">Password:</label><input name="pass" class="col-6" type="password" placeholder="Password"></div>
