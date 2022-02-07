@@ -6,7 +6,9 @@
   
     refreshLoggedinUserData(function (){
       ClassicEditor
-      .create( document.querySelector( '#bio_editor' ) )
+      .create( document.querySelector( '#bio_editor' ), {
+          toolbar: [ 'Heading','Essentials','Autoformat','Bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote','Link','Table','TableToolbar' ]
+      } )
       .then( editor => {
           console.log( editor );
           CKEditor = editor;
@@ -15,6 +17,8 @@
       .catch( error => {
           console.error( error );
       } ); 
+
+      
     });
 
     const reader = new FileReader();

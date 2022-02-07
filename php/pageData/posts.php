@@ -24,8 +24,9 @@
     });
 
     ClassicEditor
-    .create( document.querySelector( '#postContent' ) )
-    .then( editor => {
+    .create( document.querySelector( '#postContent' ), {
+        toolbar: [ 'Heading','Essentials','Autoformat','Bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote','Link','Table','TableToolbar' ]
+    } ).then( editor => {
         console.log( editor );
     } )
     .catch( error => {
