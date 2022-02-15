@@ -1,7 +1,7 @@
 <?php
   session_start();
   //requires
-  require_once('../class/DB_class.php');
+  require_once('../../.php/class/DB_class.php');
   
   //function includes
   include_once('../userFunction.php');
@@ -45,7 +45,7 @@
         } ;
         document.querySelector("#reactionContent").value = "";
         console.log(postData);
-        doRequest('php/action.php?action=saveNewReaction',postData,(res)=>{
+        doRequest('../.php/action.php?action=saveNewReaction',postData,(res)=>{
           loadReactions(<?=$_GET["pid"]?>);
         });
       });
@@ -142,7 +142,7 @@
           change_data.push({"type":"content","data":document.querySelector(".ck-content").innerHTML.replace(/"/g, '\\"')});
           postData = {"pid":<?=$_GET["pid"]?>,"edits":change_data}
           console.log(postData);
-          doRequest('php/action.php?action=savePostEdits',postData,(res)=>{
+          doRequest('../.php/action.php?action=savePostEdits',postData,(res)=>{
             console.log(res);
             refreshLoggedinUserData();
           });
@@ -152,7 +152,7 @@
 
           postData = {"pid":<?=$_GET["pid"]?>}
           console.log(postData);
-          doRequest('php/action.php?action=hidePost',postData,(res)=>{
+          doRequest('../.php/action.php?action=hidePost',postData,(res)=>{
             console.log(res);
             refreshLoggedinUserData();
             goToPage("posts");

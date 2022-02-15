@@ -16,7 +16,7 @@
       })
       console.log(formDataJson);
 
-      doRequest('php/action.php?action=saveNewUser',formDataJson,(res)=>{
+      doRequest('../.php/action.php?action=saveNewUser',formDataJson,(res)=>{
         console.log(res);
         refreshLoggedinUserData();
         updateUserGUI();
@@ -34,7 +34,7 @@
       })
       console.log(formDataJson);
 
-      doRequest('php/action.php?action=userLoginCheck',formDataJson,(res)=>{
+      doRequest('../.php/action.php?action=userLoginCheck',formDataJson,(res)=>{
         console.log(res);
         results = JSON.parse(res);
         refreshLoggedinUserData();
@@ -56,10 +56,10 @@
           formDataJson.push(itemObj)
       })
       console.log(formDataJson);
-      doRequest("php/action.php?action=forgotPasswordSend",formDataJson,(res)=>{
+      doRequest("../.php/action.php?action=forgotPasswordSend",formDataJson,(res)=>{
         console.log(res)
       })
-      //doRequest('php/action.php?action=userLoginCheck',formDataJson,(res)=>{
+      //doRequest('../.php/action.php?action=userLoginCheck',formDataJson,(res)=>{
       //  console.log(res);
       //  results = JSON.parse(res);
       //  refreshLoggedinUserData();

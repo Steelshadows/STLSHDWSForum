@@ -1,7 +1,7 @@
 <?php
   session_start();
   //requires
-  require_once('../class/DB_class.php');
+  require_once('../../.php/class/DB_class.php');
   
   //function includes
   include_once('../userFunction.php');

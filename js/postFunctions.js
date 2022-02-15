@@ -130,7 +130,7 @@ function createReactionBlock(target,uid,contentText,date,userAlias,userImageSrc)
     target.appendChild(container);
 }
 function loadPostsDate(){
-    doRequest('php/action.php?action=getPosts',(res)=>{
+    doRequest('../.php/action.php?action=getPosts',(res)=>{
         results = JSON.parse(res);
         if(results["success"]){
             document.querySelector("div.view_post").innerHTML = "";
@@ -147,7 +147,7 @@ function loadPostsDate(){
     }); 
 }
 function loadReactions($pid){
-    doRequest('php/action.php?action=getReactions',{"pid":$pid},(res)=>{
+    doRequest('../.php/action.php?action=getReactions',{"pid":$pid},(res)=>{
         results = JSON.parse(res);
         if(results["success"]){
             reactions = results["reactions"];

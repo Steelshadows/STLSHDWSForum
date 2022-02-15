@@ -19,7 +19,7 @@
         'key':'<?=$_GET["actionkey"]?>',
         'formData':formDataJson
       };
-      doRequest('php/action.php?action=passKeyReset',requestData,(res)=>{
+      doRequest('../.php/action.php?action=passKeyReset',requestData,(res)=>{
         console.log(res);
         goToPage('login');
       });

@@ -13,7 +13,7 @@
             "content":document.querySelector(".ck-content").innerHTML.replace(/"/g, '\\"')
         } ;
         console.log(postData);
-        doRequest('php/action.php?action=saveNewPost',postData,(res)=>{
+        doRequest('../.php/action.php?action=saveNewPost',postData,(res)=>{
             console.log(res);
             document.getElementById("postTitle").innerHTML = "";
             document.querySelector(".ck-content").innerHTML = "";

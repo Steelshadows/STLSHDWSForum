@@ -63,7 +63,7 @@
           change_data.push({"type":"image","data":reader.result});
           change_data.push({"type":"bio","data":document.getElementById("bio_editor").value});
           change_data.push({"type":"alias","data":document.getElementById("alias_editor").value});
-          doRequest('php/action.php?action=saveProfileEdits',change_data,(res)=>{
+          doRequest('../.php/action.php?action=saveProfileEdits',change_data,(res)=>{
             console.log(res);
             refreshLoggedinUserData();
           });
@@ -73,7 +73,7 @@
         change_data.push({"type":"bio","data":document.querySelector(".ck-content").innerHTML.replace(/"/g, '\\"')});
         change_data.push({"type":"alias","data":document.getElementById("alias_editor").value});
         console.log(change_data);
-        doRequest('php/action.php?action=saveProfileEdits',change_data,(res)=>{
+        doRequest('../.php/action.php?action=saveProfileEdits',change_data,(res)=>{
           console.log(res);
           refreshLoggedinUserData();
         });
