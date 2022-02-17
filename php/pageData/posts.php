@@ -1,40 +1,8 @@
 <?php
   $data = json_decode(stripslashes(file_get_contents("php://input")),true);
 ?>
+<div id="pageTitle" data-pagetitle="STLSHDWS post list"></div>
 <script type="temp"> 
-    document.getElementById("createPost").addEventListener("click",(ev)=>{
-        document.querySelectorAll(".create_post").forEach((item,key)=>{item.classList.remove('d-none')})
-        document.querySelectorAll(".view_post").forEach((item,key)=>{item.classList.add('d-none')})
-    });
-    document.getElementById("submitPost").addEventListener("click",(ev)=>{
-        ev.preventDefault();
-        postData = {
-            "title":document.getElementById("postTitle").value,
-            "content":document.querySelector(".ck-content").innerHTML.replace(/"/g, '\\"')
-        } ;
-        console.log(postData);
-        doRequest('../.php/action.php?action=saveNewPost',postData,(res)=>{
-            console.log(res);
-            document.getElementById("postTitle").innerHTML = "";
-            document.querySelector(".ck-content").innerHTML = "";
-            document.querySelectorAll(".view_post").forEach((item,key)=>{item.classList.remove('d-none')})
-            document.querySelectorAll(".create_post").forEach((item,key)=>{item.classList.add('d-none')})
-            loadPostsDate();
-        });
-    });
-
-    ClassicEditor
-    .create( document.querySelector( '#postContent' ), {
-        toolbar: [ 'Heading','Essentials','Autoformat','Bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote','Link','Table','TableToolbar' ]
-    } ).then( editor => {
-        console.log( editor );
-    } )
-    .catch( error => {
-        console.error( error );
-    } );
-
-
-    loadPostsDate();
 </script>    
 <div class="row">
     <div class="col-10">

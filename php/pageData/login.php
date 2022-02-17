@@ -1,71 +1,8 @@
 <?php
   $data = json_decode(stripslashes(file_get_contents("php://input")),true);
 ?>
+  <div id="pageTitle" data-pagetitle="STLSHDWS login"></div>
   <script type="temp">    
-    console.log("oi");
-    document.title = "STLSHDWS login";
-    document.getElementById("signupForm").addEventListener("submit",(e)=>{
-      e.preventDefault();
-      
-      formDataJson = [];
-      document.forms['signupForm'].querySelectorAll("input").forEach((item,key)=>{
-          itemObj = {};
-          itemObj.name = item.name;
-          itemObj.value = item.value;
-          formDataJson.push(itemObj)
-      })
-      console.log(formDataJson);
-
-      doRequest('../.php/action.php?action=saveNewUser',formDataJson,(res)=>{
-        console.log(res);
-        refreshLoggedinUserData();
-        updateUserGUI();
-      });
-    });
-    document.getElementById("loginForm").addEventListener("submit",(e)=>{
-      e.preventDefault();
-      
-      formDataJson = [];
-      document.forms['loginForm'].querySelectorAll("input").forEach((item,key)=>{
-          itemObj = {};
-          itemObj.name = item.name;
-          itemObj.value = item.value;
-          formDataJson.push(itemObj)
-      })
-      console.log(formDataJson);
-
-      doRequest('../.php/action.php?action=userLoginCheck',formDataJson,(res)=>{
-        console.log(res);
-        results = JSON.parse(res);
-        refreshLoggedinUserData();
-        if(results.success)goToPage('myBioPage');
-      });
-    });
-    document.getElementById("show_pass_reset").addEventListener("click",(e)=>{
-      document.querySelectorAll(".sign_up , .log_in").forEach((item)=>{item.classList.add("d-none")});
-      document.querySelectorAll(".forgot_password").forEach((item)=>{item.classList.remove("d-none")});
-    });
-    document.getElementById("password_reset").addEventListener("submit",(e)=>{
-      e.preventDefault();
-      
-      formDataJson = [];
-      document.forms['password_reset'].querySelectorAll("input").forEach((item,key)=>{
-          itemObj = {};
-          itemObj.name = item.name;
-          itemObj.value = item.value;
-          formDataJson.push(itemObj)
-      })
-      console.log(formDataJson);
-      doRequest("../.php/action.php?action=forgotPasswordSend",formDataJson,(res)=>{
-        console.log(res)
-      })
-      //doRequest('../.php/action.php?action=userLoginCheck',formDataJson,(res)=>{
-      //  console.log(res);
-      //  results = JSON.parse(res);
-      //  refreshLoggedinUserData();
-      //  if(results.success)goToPage('myBioPage');
-      //});
-    });
   </script>
   <div class="row justify-content-center">
     <div class="col log_in">

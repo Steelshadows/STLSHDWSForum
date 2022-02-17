@@ -1,86 +1,8 @@
 <?php
   $data = json_decode(stripslashes(file_get_contents("php://input")),true);
 ?>
+  <div id="pageTitle" data-pagetitle="STLSHDWS my bio"></div>
   <script type="temp">    
-     
-  
-    refreshLoggedinUserData(function (){
-      ClassicEditor
-      .create( document.querySelector( '#bio_editor' ), {
-          toolbar: [ 'Heading','Essentials','Autoformat','Bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote','Link','Table','TableToolbar' ]
-      } )
-      .then( editor => {
-          console.log( editor );
-          CKEditor = editor;
-          editor.setData(sessionStorage.getItem("bio"));
-      } )
-      .catch( error => {
-          console.error( error );
-      } ); 
-
-      
-    });
-
-    const reader = new FileReader();
-    function previewProfileImage(){
-      reader.readAsDataURL(document.getElementById("bio_image_upload").files[0]);
-      reader.onload = () => {
-        const preview = document.getElementsByClassName('display_image')[0];
-        preview.src = reader.result;
-      };
-    }
-    document.getElementById("editMyPage").addEventListener("click",(ev)=>{
-      document.querySelectorAll(".bio-edit").forEach((item,key)=>{item.classList.remove('d-none')})
-      document.querySelectorAll(".bio-view").forEach((item,key)=>{item.classList.add('d-none')})
-    });
-    document.getElementById("viewMyPage").addEventListener("click",(ev)=>{
-      document.querySelectorAll(".bio-edit").forEach((item,key)=>{item.classList.add('d-none')})
-      document.querySelectorAll(".bio-view").forEach((item,key)=>{item.classList.remove('d-none')})
-
-      //refresh data
-      document.querySelectorAll('.display_bio').forEach((item)=>{
-        console.log(item.innerHTML = document.querySelector(".ck-content").innerHTML.replace(/"/g, '\\"'))
-      });
-    });
-    document.getElementById("bio_editor").addEventListener("change",(ev)=>{
-      document.getElementById("bio_container").innerHTML = document.getElementById("bio_editor").value;
-    });
-    document.getElementById("alias_editor").addEventListener("change",(ev)=>{
-      document.querySelectorAll(".display_alias").forEach((item,key)=>{
-        console.log(item,key);
-        item.innerText = document.getElementById("alias_editor").value;
-      });
-    });
-    document.getElementById("bio_image_upload").addEventListener("change",(ev)=>{
-      previewProfileImage();
-    });
-    document.getElementById("submitChanges").addEventListener("click",(ev)=>{
-      change_data = [];
-      if(document.getElementById("bio_image_upload").files.length == 1){
-        reader.readAsDataURL(document.getElementById("bio_image_upload").files[0]);
-        reader.onload = () => {
-          const preview = document.getElementsByClassName('display_image')[0];
-          change_data.push({"type":"image","data":reader.result});
-          change_data.push({"type":"bio","data":document.getElementById("bio_editor").value});
-          change_data.push({"type":"alias","data":document.getElementById("alias_editor").value});
-          doRequest('../.php/action.php?action=saveProfileEdits',change_data,(res)=>{
-            console.log(res);
-            refreshLoggedinUserData();
-          });
-        };
-      }else{
-
-        change_data.push({"type":"bio","data":document.querySelector(".ck-content").innerHTML.replace(/"/g, '\\"')});
-        change_data.push({"type":"alias","data":document.getElementById("alias_editor").value});
-        console.log(change_data);
-        doRequest('../.php/action.php?action=saveProfileEdits',change_data,(res)=>{
-          console.log(res);
-          refreshLoggedinUserData();
-        });
-      }
-    });
-    
-    
   </script>
   <div class="row justify-content-center">
     <div class="col-10">

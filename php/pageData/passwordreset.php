@@ -1,29 +1,8 @@
 <?php
   $data = json_decode(stripslashes(file_get_contents("php://input")),true);
 ?>
+  <div id="pageTitle" data-pagetitle="STLSHDWS password reset" data-actionkey="<?php echo $_GET["actionkey"];?>"></div>
   <script type="temp">    
-    console.log("oi");
-    document.title = "STLSHDWS login";
-    document.getElementById("pwresetForm").addEventListener("submit",(e)=>{
-      e.preventDefault();
-      
-      formDataJson = [];
-      document.forms['pwresetForm'].querySelectorAll("input").forEach((item,key)=>{
-          itemObj = {};
-          itemObj.name = item.name;
-          itemObj.value = item.value;
-          formDataJson.push(itemObj)
-      })
-      console.log(formDataJson);
-      requestData = {
-        'key':'<?=$_GET["actionkey"]?>',
-        'formData':formDataJson
-      };
-      doRequest('../.php/action.php?action=passKeyReset',requestData,(res)=>{
-        console.log(res);
-        goToPage('login');
-      });
-    });
   </script>
   <div class="row justify-content-center">
     <div class="col">

@@ -1,11 +1,11 @@
 <?php
   session_start();
   //requires
-  require_once('../../.php/class/DB_class.php');
+  require_once('../../../.php/class/DB_class.php');
   
   //function includes
-  include_once('../userFunction.php');
-  include_once('../postFunction.php');
+  include_once('../../../.php/userFunction.php');
+  include_once('../../../.php/postFunction.php');
   $data = json_decode(stripslashes(file_get_contents("php://input")),true);
 
   if(isset($_GET["pid"])){
@@ -34,31 +34,8 @@
     <?php
   }
   ?>
+  <div id="pageTitle" data-pagetitle="STLSHDWS post" data-pid="<?php echo $_GET["pid"];?>"></div>
   <script type="temp">    
-    refreshLoggedinUserData();
-    loadReactions(<?=$_GET["pid"]?>);
-    document.getElementById("newReactionForm").addEventListener("submit",(ev)=>{
-      ev.preventDefault();
-      postData = {
-        "pid":<?=$_GET["pid"]?>,
-        "content":document.querySelector("#reactionContent").value
-        } ;
-        document.querySelector("#reactionContent").value = "";
-        console.log(postData);
-        doRequest('../.php/action.php?action=saveNewReaction',postData,(res)=>{
-          loadReactions(<?=$_GET["pid"]?>);
-        });
-      });
-    document.querySelector(".link.user_ref_link").addEventListener("click",(ev)=>{
-      el = ev.target;
-      path = el.getAttribute("url");
-        data = {"uid":el.getAttribute("uid")};
-        goToPage(path,data);
-      });
-    console.log(1);
-    if(sessionStorage.getItem("uid") == '<?=$post["uid"]?>'){
-      document.querySelector(".post-owner").classList.remove("d-none");
-    }
   </script>
   <div class="row justify-content-center">
     <div class="col-10">
